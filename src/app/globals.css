@@ -1,0 +1,110 @@
+@import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
+
+:root {
+  --background: #0b0d10;
+  --foreground: #e8eef4;
+  --surface: #12151a;
+  --surface-muted: #181c22;
+  --panel: #12151a;
+  --panel-2: #181c22;
+  --ink: #e8eef4;
+  --muted: #8b98a8;
+  --border: #2a313c;
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.15);
+  --cyan: #22d3ee;
+  --cyan-soft: rgba(34, 211, 238, 0.18);
+  --emerald: #34d399;
+  --emerald-soft: rgba(52, 211, 153, 0.18);
+  --tangerine: #fb923c;
+  --tangerine-soft: rgba(251, 146, 60, 0.2);
+  --rose: #fb7185;
+  --rose-soft: rgba(251, 113, 133, 0.2);
+  --current: #fb923c;
+  --current-soft: rgba(251, 146, 60, 0.22);
+  --visited: #34d399;
+  --visited-soft: rgba(52, 211, 153, 0.18);
+  --frontier: #22d3ee;
+  --frontier-soft: rgba(34, 211, 238, 0.18);
+  --sorted: #34d399;
+  --sorted-soft: rgba(52, 211, 153, 0.2);
+  --danger: #fb7185;
+  --grid-line: rgba(232, 238, 244, 0.04);
+  --monaco-line: rgba(34, 211, 238, 0.28);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-cyan: var(--cyan);
+  --color-cyan-soft: var(--cyan-soft);
+  --color-emerald: var(--emerald);
+  --color-emerald-soft: var(--emerald-soft);
+  --color-tangerine: var(--tangerine);
+  --color-tangerine-soft: var(--tangerine-soft);
+  --color-rose: var(--rose);
+  --color-rose-soft: var(--rose-soft);
+  --color-current: var(--current);
+  --color-current-soft: var(--current-soft);
+  --color-visited: var(--visited);
+  --color-visited-soft: var(--visited-soft);
+  --color-frontier: var(--frontier);
+  --color-frontier-soft: var(--frontier-soft);
+  --color-sorted: var(--sorted);
+  --color-sorted-soft: var(--sorted-soft);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-outfit);
+  --font-mono: var(--font-jetbrains);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+}
+
+.stage-grid {
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(34, 211, 238, 0.06), transparent),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: auto, 24px 24px, 24px 24px;
+}
+
+.monaco-current-line {
+  background: var(--monaco-line) !important;
+}
+
+/* Scrollbars */
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+/* React Flow dark stage */
+.rf-stage .react-flow__background {
+  background: transparent !important;
+}
+.rf-stage .react-flow__node {
+  font-family: var(--font-jetbrains), monospace;
+}
+.rf-stage .react-flow__attribution {
+  display: none;
+}
+.rf-stage .react-flow__edge-path {
+  stroke: #8b98a8;
+}
+
