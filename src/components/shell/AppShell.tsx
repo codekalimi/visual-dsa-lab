@@ -1,12 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { TopNav } from "@/components/shell/TopNav";
 import { IconRail } from "@/components/shell/IconRail";
 import { FloatingCurriculum } from "@/components/shell/FloatingCurriculum";
+import { ScrollToTop } from "@/components/shell/ScrollToTop";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [curriculumOpen, setCurriculumOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   const openCurriculum = useCallback(() => setCurriculumOpen(true), []);
   const closeCurriculum = useCallback(() => setCurriculumOpen(false), []);
@@ -27,8 +29,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           curriculumOpen={curriculumOpen}
           onToggleCurriculum={toggleCurriculum}
         />
-        <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
+        <main ref={mainRef} className="min-w-0 flex-1 overflow-y-auto">
+          {children}
+        </main>
         <FloatingCurriculum open={curriculumOpen} onClose={closeCurriculum} />
+        <ScrollToTop scrollRef={mainRef} />
       </div>
     </div>
   );
