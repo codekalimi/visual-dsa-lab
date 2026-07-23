@@ -63,14 +63,16 @@
   --color-sorted: var(--sorted);
   --color-sorted-soft: var(--sorted-soft);
   --color-danger: var(--danger);
-  --font-sans: var(--font-outfit);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains);
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  letter-spacing: -0.011em;
 }
 
 .stage-grid {

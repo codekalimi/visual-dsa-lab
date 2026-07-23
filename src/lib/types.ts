@@ -40,6 +40,21 @@ export type ArraySnapshot = {
   metrics?: { currentSum: number; bestSum: number };
 };
 
+/** Kadane-only snapshot for the per-index cur/best live visualization. */
+export type KadaneSnapshot = {
+  values: number[];
+  /** cur after processing index i; null = not yet visited */
+  curAt: (number | null)[];
+  bestAt: (number | null)[];
+  /** Active loop index (null on empty / final done-only frames) */
+  i: number | null;
+  start: number;
+  end: number;
+  currentSum: number;
+  bestSum: number;
+  showCurrentBracket: boolean;
+};
+
 export type ListNodeSnap = {
   id: string;
   value: number;

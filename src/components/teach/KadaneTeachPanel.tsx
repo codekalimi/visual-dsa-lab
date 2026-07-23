@@ -1,6 +1,20 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import {
+  AlertTriangle,
+  BookOpen,
+  Brain,
+  Building2,
+  Code2,
+  FileText,
+  FlaskConical,
+  Globe,
+  GraduationCap,
+  ListOrdered,
+  Target,
+  Zap,
+} from "lucide-react";
 import { TeachCard, TeachRail } from "@/components/teach/TeachRail";
 
 function CodeBlock({ children }: { children: string }) {
@@ -49,7 +63,7 @@ export function KadaneTeachPanel() {
         solution.
       </p>
 
-      <TeachCard index={1} title="Problem it solves">
+      <TeachCard icon={FileText} accent="blue" title="Problem it solves">
         <p>
           You are given a list of numbers. You must pick one{" "}
           <strong className="text-ink">contiguous</strong> slice (a subarray)
@@ -62,7 +76,7 @@ export function KadaneTeachPanel() {
         </p>
       </TeachCard>
 
-      <TeachCard index={2} title="Mental model">
+      <TeachCard icon={Globe} accent="cyan" title="Mental model">
         <p>
           Think of each day&apos;s profit (can be negative). You track a{" "}
           <em>current streak</em> and the <em>best streak so far</em>.
@@ -73,15 +87,15 @@ export function KadaneTeachPanel() {
           new streak starting today — whichever is larger.
         </p>
         <p className="font-mono text-[11px] text-cyan">
-          cur = max(nums[i], cur + nums[i])
+          if curSum &lt; 0: reset; then curSum += nums[R]
         </p>
         <p>
-          Then update best if today&apos;s streak beats the record. That is the
-          whole algorithm.
+          Then update maxSum (and maxL / maxR) when the window sum beats the
+          record.
         </p>
       </TeachCard>
 
-      <TeachCard index={3} title="Quick visualization">
+      <TeachCard icon={BookOpen} accent="emerald" title="Quick visualization">
         <p>
           Cyan = current window. Emerald = best window so far. Orange = index{" "}
           <span className="font-mono">i</span>.
@@ -94,8 +108,8 @@ export function KadaneTeachPanel() {
                 <th className="py-1.5 pr-2">i</th>
                 <th className="py-1.5 pr-2">nums[i]</th>
                 <th className="py-1.5 pr-2">decision</th>
-                <th className="py-1.5 pr-2">cur</th>
-                <th className="py-1.5">best</th>
+                <th className="py-1.5 pr-2">curSum</th>
+                <th className="py-1.5">maxSum</th>
               </tr>
             </thead>
             <tbody className="text-ink">
@@ -131,12 +145,16 @@ export function KadaneTeachPanel() {
           </table>
         </div>
         <p>
-          Scrub until best lands on{" "}
+          Scrub until maxSum lands on{" "}
           <span className="font-mono text-emerald">[4, -1, 2, 1]</span> (sum 6).
         </p>
       </TeachCard>
 
-      <TeachCard index={4} title="Core idea">
+      <TeachCard
+        icon={Zap}
+        accent="amber"
+        title="Core idea from first principles"
+      >
         <p>
           <strong className="text-ink">Subarray</strong> = contiguous slice.{" "}
           <strong className="text-ink">Subsequence</strong> = pick any indices
@@ -147,22 +165,28 @@ export function KadaneTeachPanel() {
           either (1) is just <span className="font-mono">nums[i]</span>, or (2)
           is best ending at <span className="font-mono">i-1</span> plus{" "}
           <span className="font-mono">nums[i]</span>. So you only need{" "}
-          <span className="font-mono">cur</span>.
+          <span className="font-mono">curSum</span>.
         </p>
         <p>
           Track the global maximum of those ending-best values →{" "}
-          <span className="font-mono">best</span>.
+          <span className="font-mono">maxSum</span>, plus window bounds{" "}
+          <span className="font-mono">maxL</span> /{" "}
+          <span className="font-mono">maxR</span>.
         </p>
       </TeachCard>
 
-      <TeachCard index={5} title="Invariants">
+      <TeachCard
+        icon={Target}
+        accent="violet"
+        title="Operations and invariants"
+      >
         <p>
           <strong className="text-ink">Invariant:</strong> after index{" "}
           <span className="font-mono">i</span>,{" "}
-          <span className="font-mono">cur</span> is the maximum sum ending at{" "}
-          <span className="font-mono">i</span>, and{" "}
-          <span className="font-mono">best</span> is the max among all endings ≤{" "}
-          <span className="font-mono">i</span>.
+          <span className="font-mono">curSum</span> is the sum of the current
+          window <span className="font-mono">[L…R]</span>, and{" "}
+          <span className="font-mono">maxSum</span> is the best window sum seen
+          so far (bounds <span className="font-mono">maxL…maxR</span>).
         </p>
         <p>
           <strong className="text-ink">Time O(n):</strong> each index once.{" "}
@@ -170,7 +194,11 @@ export function KadaneTeachPanel() {
         </p>
       </TeachCard>
 
-      <TeachCard index={6} title="Recognition cues">
+      <TeachCard
+        icon={FlaskConical}
+        accent="teal"
+        title="Trigger words and recognition cues"
+      >
         <ul className="list-disc space-y-1 pl-4">
           <li>“contiguous” / “subarray” / “maximum sum”</li>
           <li>one pass expected; n up to 10⁵ → need O(n)</li>
@@ -182,7 +210,11 @@ export function KadaneTeachPanel() {
         </p>
       </TeachCard>
 
-      <TeachCard index={7} title="Engineering uses">
+      <TeachCard
+        icon={Building2}
+        accent="green"
+        title="Real-world engineering uses"
+      >
         <ul className="list-disc space-y-1.5 pl-4">
           <li>
             <strong className="text-ink">Time-series spike:</strong> densest
@@ -199,7 +231,7 @@ export function KadaneTeachPanel() {
         </ul>
       </TeachCard>
 
-      <TeachCard index={8} title="Worked example">
+      <TeachCard icon={ListOrdered} accent="orange" title="Worked example">
         <p>
           Array:{" "}
           <span className="font-mono text-ink">
@@ -214,31 +246,29 @@ export function KadaneTeachPanel() {
         </p>
       </TeachCard>
 
-      <TeachCard index={9} title="Code template">
+      <TeachCard icon={Code2} accent="purple" title="Reusable code template">
         <p>Generic (sum only):</p>
-        <CodeBlock>{`def max_subarray(nums):
-    best = cur = nums[0]
-    for x in nums[1:]:
-        cur = max(x, cur + x)
-        best = max(best, cur)
-    return best`}</CodeBlock>
-        <p>With indices (matches Monaco):</p>
-        <CodeBlock>{`def max_subarray(nums):
-    best = cur = nums[0]
-    start = end = cur_start = 0
-    for i in range(1, len(nums)):
-        if cur + nums[i] < nums[i]:
-            cur = nums[i]
-            cur_start = i
-        else:
-            cur += nums[i]
-        if cur > best:
-            best = cur
-            start, end = cur_start, i
-    return best`}</CodeBlock>
+        <p>Matches the Monaco panel (returns window bounds):</p>
+        <CodeBlock>{`def slidingWindow(nums):
+    maxSum = nums[0]
+    curSum = 0
+    maxL, maxR = 0, 0
+    L = 0
+
+    for R in range(len(nums)):
+        if curSum < 0:
+            curSum = 0
+            L = R
+
+        curSum += nums[R]
+        if curSum > maxSum:
+            maxSum = curSum
+            maxL, maxR = L, R
+
+    return [maxL, maxR]`}</CodeBlock>
       </TeachCard>
 
-      <TeachCard index={10} title="Failure modes">
+      <TeachCard icon={AlertTriangle} accent="rose" title="Failure modes">
         <ul className="list-disc space-y-1 pl-4">
           <li>
             <strong className="text-ink">All negative:</strong> largest single
@@ -259,7 +289,7 @@ export function KadaneTeachPanel() {
         </ul>
       </TeachCard>
 
-      <TeachCard index={11} title="Practice ladder">
+      <TeachCard icon={GraduationCap} accent="cyan" title="Practice ladder">
         <ol className="list-decimal space-y-1.5 pl-4">
           <li>
             <a
@@ -295,14 +325,14 @@ export function KadaneTeachPanel() {
         </ol>
       </TeachCard>
 
-      <TeachCard index={12} title="Memory & recall">
+      <TeachCard icon={Brain} accent="pink" title="Memory and recall">
         <p className="font-medium text-ink">
-          Hook: “At each index: continue or restart; keep the best.”
+          Hook: “If curSum &lt; 0, restart at R; else extend. Keep maxSum.”
         </p>
         <ol className="list-decimal space-y-1 pl-4">
           <li>
-            State the invariant for <span className="font-mono">cur</span> and{" "}
-            <span className="font-mono">best</span>.
+            State the invariant for <span className="font-mono">curSum</span>{" "}
+            and <span className="font-mono">maxSum</span>.
           </li>
           <li>
             Why restart when <span className="font-mono">nums[i]</span> alone is
@@ -322,8 +352,8 @@ export function KadaneTeachPanel() {
           <li>Name brute force and its bottleneck.</li>
           <li>Extract triggers → Kadane.</li>
           <li>
-            Name the invariant (<span className="font-mono">cur</span> ends
-            here).
+            Name the invariant (<span className="font-mono">curSum</span> is
+            the sum of <span className="font-mono">[L…R]</span>).
           </li>
           <li>Write pseudocode before syntax.</li>
           <li>Test normal, boundary, adversarial cases.</li>

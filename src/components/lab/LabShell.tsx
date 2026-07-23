@@ -8,17 +8,8 @@ import { ENGINE_META } from "@/lib/types";
 import { usePlayerStore, selectCurrentStep } from "@/lib/player/store";
 import { StepPlayer } from "@/components/lab/StepPlayer";
 import { EngineInputPanel } from "@/components/lab/InputPanel";
-import { ArrayVisualizer } from "@/components/visualizers/ArrayVisualizer";
-import { LinkedListVisualizer } from "@/components/visualizers/LinkedListVisualizer";
-import { TreeVisualizer } from "@/components/visualizers/TreeVisualizer";
-import { GraphVisualizer } from "@/components/visualizers/GraphVisualizer";
 import { renderTeachPanel } from "@/lib/teach/registry";
-import type {
-  ArraySnapshot,
-  GraphSnapshot,
-  LinkedListSnapshot,
-  TreeSnapshot,
-} from "@/lib/types";
+import { renderVisualizer } from "@/lib/viz/registry";
 
 const MonacoCodePanel = dynamic(
   () =>
@@ -104,7 +95,7 @@ export function LabShell({ algo }: Props) {
           </div>
         </header>
 
-        <Visualizer engine={algo.engine} step={current} />
+        {renderVisualizer(algo.id, algo.engine as EngineId, current)}
         <StepPlayer />
 
         <div className="rounded-xl border border-border bg-panel">
@@ -146,45 +137,5 @@ function Badge({ label }: { label: string }) {
     <span className="rounded-md border border-border bg-cyan-soft px-2.5 py-1 font-mono text-xs font-medium text-cyan">
       {label}
     </span>
-  );
-}
-
-function Visualizer({
-  engine,
-  step,
-}: {
-  engine: EngineId;
-  step: ReturnType<typeof selectCurrentStep>;
-}) {
-  const highlights = step?.highlights;
-  if (engine === "arrays") {
-    return (
-      <ArrayVisualizer
-        snapshot={(step?.snapshot as ArraySnapshot) ?? null}
-        highlights={highlights}
-      />
-    );
-  }
-  if (engine === "linked-list") {
-    return (
-      <LinkedListVisualizer
-        snapshot={(step?.snapshot as LinkedListSnapshot) ?? null}
-        highlights={highlights}
-      />
-    );
-  }
-  if (engine === "trees") {
-    return (
-      <TreeVisualizer
-        snapshot={(step?.snapshot as TreeSnapshot) ?? null}
-        highlights={highlights}
-      />
-    );
-  }
-  return (
-    <GraphVisualizer
-      snapshot={(step?.snapshot as GraphSnapshot) ?? null}
-      highlights={highlights}
-    />
   );
 }
