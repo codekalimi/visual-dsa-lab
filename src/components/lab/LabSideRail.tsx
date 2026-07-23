@@ -38,7 +38,7 @@ export function LabSideRail({
 }: Props) {
   return (
     <aside
-      className="flex w-full shrink-0 flex-col border-t border-border bg-panel xl:sticky xl:top-0 xl:h-[calc(100dvh-2.75rem)] xl:w-[420px] xl:border-t-0 xl:border-l xl:self-start"
+      className="flex w-full shrink-0 flex-col border-t border-border bg-panel xl:sticky xl:top-0 xl:h-[calc(100dvh-4rem)] xl:w-[420px] xl:border-t-0 xl:border-l xl:self-start"
       aria-label="Input and algorithm code"
     >
       <div className="shrink-0 border-b border-border">

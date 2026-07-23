@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Editor, { type OnMount } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
+import { useTheme } from "@/lib/theme/ThemeProvider";
 
 type Props = {
   code: string;
@@ -17,8 +18,10 @@ export function MonacoCodePanel({
   activeLines = [],
   fill = false,
 }: Props) {
+  const { theme } = useTheme();
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const decoRef = useRef<string[]>([]);
+  const monacoTheme = theme === "light" ? "light" : "vs-dark";
 
   const handleMount: OnMount = (ed) => {
     editorRef.current = ed;
@@ -79,15 +82,15 @@ export function MonacoCodePanel({
 
   return (
     <div
-      className={`flex flex-col overflow-hidden rounded-xl border border-border bg-[#1e1e1e] shadow-sm ${
+      className={`flex flex-col overflow-hidden rounded-xl border border-border bg-panel-2 shadow-sm ${
         fill ? "h-full min-h-0" : "h-full min-h-[220px]"
       }`}
     >
-      <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-3 py-2">
-        <span className="font-mono text-xs tracking-wide text-white/70">
+      <div className="flex shrink-0 items-center justify-between border-b border-border px-3 py-2">
+        <span className="font-mono text-xs tracking-wide text-muted">
           algorithm.py
         </span>
-        <span className="text-[10px] uppercase tracking-wider text-white/40">
+        <span className="text-[10px] uppercase tracking-wider text-muted/70">
           Python · read-only
         </span>
       </div>
@@ -96,7 +99,7 @@ export function MonacoCodePanel({
           height="100%"
           language="python"
           value={code}
-          theme="vs-dark"
+          theme={monacoTheme}
           onMount={handleMount}
           options={{
             readOnly: true,
