@@ -12,6 +12,7 @@ import { ArrayVisualizer } from "@/components/visualizers/ArrayVisualizer";
 import { LinkedListVisualizer } from "@/components/visualizers/LinkedListVisualizer";
 import { TreeVisualizer } from "@/components/visualizers/TreeVisualizer";
 import { GraphVisualizer } from "@/components/visualizers/GraphVisualizer";
+import { renderTeachPanel } from "@/lib/teach/registry";
 import type {
   ArraySnapshot,
   GraphSnapshot,
@@ -73,72 +74,76 @@ export function LabShell({ algo }: Props) {
   const meta = ENGINE_META[algo.engine as EngineId];
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6 md:px-6">
-      <header className="flex flex-col gap-2">
-        <nav className="flex flex-wrap items-center gap-2 text-xs text-muted">
-          <Link href="/" className="hover:text-cyan">
-            Lab
-          </Link>
-          <span>/</span>
-          <Link href={meta.href} className="hover:text-cyan">
-            {meta.label}
-          </Link>
-          <span>/</span>
-          <span className="text-ink">{algo.title}</span>
-        </nav>
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-ink md:text-3xl">
-              {algo.title}
-            </h1>
-            <p className="mt-1 max-w-2xl text-sm text-muted">{algo.description}</p>
-          </div>
-          <div className="flex gap-2">
-            <Badge label={`Time ${algo.complexity.time}`} />
-            <Badge label={`Space ${algo.complexity.space}`} />
-          </div>
-        </div>
-      </header>
-
-      {/* Hero stage */}
-      <Visualizer engine={algo.engine} step={current} />
-      <StepPlayer />
-
-      {/* Secondary: inputs + code */}
-      <div className="rounded-xl border border-border bg-panel">
-        <button
-          type="button"
-          onClick={() => setToolsOpen((o) => !o)}
-          className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-ink"
-        >
-          <span>Input &amp; code</span>
-          <span className="text-muted">{toolsOpen ? "▾" : "▸"}</span>
-        </button>
-        {toolsOpen && (
-          <div className="grid gap-4 border-t border-border p-4 lg:grid-cols-2">
-            <EngineInputPanel
-              engine={algo.engine}
-              algoId={algo.id}
-              defaultInput={algo.defaultInput}
-              onRun={onRun}
-              error={error}
-            />
-            <div className="min-h-[260px]">
-              <MonacoCodePanel
-                code={algo.code}
-                activeLines={current?.highlights.lines}
-              />
+    <div className="flex w-full flex-col xl:flex-row">
+      <div className="mx-auto flex min-w-0 flex-1 flex-col gap-4 px-4 py-5 md:px-6">
+        <header className="flex flex-col gap-2">
+          <nav className="flex flex-wrap items-center gap-2 text-xs text-muted">
+            <Link href="/" className="hover:text-cyan">
+              Lab
+            </Link>
+            <span>/</span>
+            <Link href={meta.href} className="hover:text-cyan">
+              {meta.label}
+            </Link>
+            <span>/</span>
+            <span className="text-ink">{algo.title}</span>
+          </nav>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-ink md:text-3xl">
+                {algo.title}
+              </h1>
+              <p className="mt-1 max-w-2xl text-sm text-muted">
+                {algo.description}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Badge label={`Time ${algo.complexity.time}`} />
+              <Badge label={`Space ${algo.complexity.space}`} />
             </div>
           </div>
-        )}
+        </header>
+
+        <Visualizer engine={algo.engine} step={current} />
+        <StepPlayer />
+
+        <div className="rounded-xl border border-border bg-panel">
+          <button
+            type="button"
+            onClick={() => setToolsOpen((o) => !o)}
+            className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-ink"
+          >
+            <span>Input &amp; code</span>
+            <span className="text-muted">{toolsOpen ? "▾" : "▸"}</span>
+          </button>
+          {toolsOpen && (
+            <div className="grid gap-4 border-t border-border p-4 lg:grid-cols-2">
+              <EngineInputPanel
+                engine={algo.engine}
+                algoId={algo.id}
+                defaultInput={algo.defaultInput}
+                onRun={onRun}
+                error={error}
+              />
+              <div className="min-h-[260px]">
+                <MonacoCodePanel
+                  code={algo.code}
+                  activeLines={current?.highlights.lines}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {renderTeachPanel(algo.id)}
     </div>
   );
 }
 
 function Badge({ label }: { label: string }) {
   return (
-    <span className="rounded-full border border-border bg-cyan-soft px-3 py-1 font-mono text-xs font-medium text-cyan">
+    <span className="rounded-md border border-border bg-cyan-soft px-2.5 py-1 font-mono text-xs font-medium text-cyan">
       {label}
     </span>
   );

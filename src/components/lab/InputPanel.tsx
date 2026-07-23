@@ -330,6 +330,12 @@ export function EngineInputPanel({
       <ArrayBubbleInput defaultValues={d.values} onRun={onRun} error={error} />
     );
   }
+  if (engine === "arrays" && algoId === "kadane") {
+    const d = defaultInput as { values: number[] };
+    return (
+      <ArrayBubbleInput defaultValues={d.values} onRun={onRun} error={error} />
+    );
+  }
   if (engine === "arrays" && algoId === "two-pointers") {
     const d = defaultInput as { values: number[]; target: number };
     return (

@@ -19,7 +19,16 @@ const POINTER_LABEL: Record<string, string> = {
   j: "j",
   j1: "j+1",
   i: "i",
+  cs: "cs",
 };
+
+function inRange(
+  i: number,
+  range: { start: number; end: number } | undefined,
+): boolean {
+  if (!range) return false;
+  return i >= range.start && i <= range.end;
+}
 
 export function ArrayVisualizer({ snapshot, highlights }: Props) {
   const rowRef = useRef<HTMLDivElement>(null);
@@ -82,6 +91,11 @@ export function ArrayVisualizer({ snapshot, highlights }: Props) {
       values: [...snapshot.values],
       sortedUpTo: snapshot.sortedUpTo,
       pointers: snapshot.pointers ? { ...snapshot.pointers } : undefined,
+      window: snapshot.window ? { ...snapshot.window } : undefined,
+      currentWindow: snapshot.currentWindow
+        ? { ...snapshot.currentWindow }
+        : undefined,
+      metrics: snapshot.metrics ? { ...snapshot.metrics } : undefined,
     };
   }, [snapshot, highlights, speed]);
 
@@ -89,31 +103,91 @@ export function ArrayVisualizer({ snapshot, highlights }: Props) {
     return <StageEmpty label="Run to visualize the array" />;
   }
 
+  const metrics = snapshot.metrics;
+
   return (
     <StageCanvas minHeight="min-h-[300px]">
+      {metrics && (
+        <div className="flex flex-wrap gap-4 border-b border-border/60 px-4 py-2 font-mono text-xs">
+          <span className="text-muted">
+            cur{" "}
+            <motion.span
+              key={`cur-${metrics.currentSum}`}
+              initial={{ opacity: 0.4, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="font-bold text-cyan"
+            >
+              {metrics.currentSum}
+            </motion.span>
+          </span>
+          <span className="text-muted">
+            best{" "}
+            <motion.span
+              key={`best-${metrics.bestSum}`}
+              initial={{ opacity: 0.4, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="font-bold text-emerald"
+            >
+              {metrics.bestSum}
+            </motion.span>
+          </span>
+          {snapshot.currentWindow && (
+            <span className="text-muted">
+              current window{" "}
+              <span className="text-cyan">
+                [{snapshot.currentWindow.start}…{snapshot.currentWindow.end}]
+              </span>
+            </span>
+          )}
+          {snapshot.window && (
+            <span className="text-muted">
+              best window{" "}
+              <span className="text-emerald">
+                [{snapshot.window.start}…{snapshot.window.end}]
+              </span>
+            </span>
+          )}
+        </div>
+      )}
       <LayoutGroup>
         <motion.div
           layout
           ref={rowRef}
-          className="flex h-full min-h-[300px] items-center justify-center gap-3 overflow-x-auto px-6 py-10"
+          className="flex h-full min-h-[260px] items-center justify-center gap-3 overflow-x-auto px-6 py-10"
         >
           {snapshot.values.map((v, i) => {
             const active = highlights?.indices?.includes(i);
             const sorted =
               snapshot.sortedUpTo !== undefined && i >= snapshot.sortedUpTo;
+            const inCurrent = inRange(i, snapshot.currentWindow);
+            const inBest = inRange(i, snapshot.window);
             const pointers = Object.entries(snapshot.pointers ?? {}).filter(
               ([, idx]) => idx === i,
             );
+
             let fill = "rgba(34,211,238,0.12)";
             let stroke = "#2a313c";
             if (sorted) {
               fill = "rgba(52,211,153,0.2)";
               stroke = "#34d399";
             }
+            if (inCurrent) {
+              fill = "rgba(34,211,238,0.22)";
+              stroke = "#22d3ee";
+            }
+            if (inBest) {
+              fill = "rgba(52,211,153,0.25)";
+              stroke = "#34d399";
+            }
+            if (inCurrent && inBest) {
+              fill = "rgba(52,211,153,0.3)";
+              stroke = "#34d399";
+            }
             if (active) {
-              fill = "rgba(251,146,60,0.22)";
+              fill = "rgba(251,146,60,0.28)";
               stroke = "#fb923c";
             }
+
             return (
               <motion.div
                 layout
@@ -147,6 +221,31 @@ export function ArrayVisualizer({ snapshot, highlights }: Props) {
           })}
         </motion.div>
       </LayoutGroup>
+      {(metrics ||
+        snapshot.currentWindow ||
+        snapshot.window ||
+        highlights?.indices?.length) && (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/60 px-4 py-2.5 font-mono text-[10px] text-muted">
+          <LegendSwatch color="#fb923c" label="current index" />
+          <LegendSwatch color="#22d3ee" label="current window" />
+          <LegendSwatch color="#34d399" label="best window" />
+          {snapshot.pointers && Object.keys(snapshot.pointers).length > 0 && (
+            <span className="text-muted/80">pointer labels under cells</span>
+          )}
+        </div>
+      )}
     </StageCanvas>
+  );
+}
+
+function LegendSwatch({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        className="h-2.5 w-2.5 rounded-sm border"
+        style={{ background: `${color}44`, borderColor: color }}
+      />
+      {label}
+    </span>
   );
 }

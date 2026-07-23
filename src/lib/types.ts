@@ -33,6 +33,11 @@ export type ArraySnapshot = {
   values: number[];
   sortedUpTo?: number;
   pointers?: Record<string, number>;
+  /** Best-known or current candidate subarray range (inclusive). */
+  window?: { start: number; end: number };
+  /** Optional second range (e.g. current window while window = best). */
+  currentWindow?: { start: number; end: number };
+  metrics?: { currentSum: number; bestSum: number };
 };
 
 export type ListNodeSnap = {

@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Engine | Algorithms |
 |--------|------------|
-| Arrays | Bubble Sort, Two Pointers (pair sum) |
+| Arrays | Bubble Sort, Two Pointers (pair sum), Kadane (Max Subarray) |
 | Linked List | Reverse List, Insert at Position |
 | Trees | BST Insert, Inorder Traversal |
 | Graphs | Valid Path (BFS) |
