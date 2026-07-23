@@ -8,9 +8,15 @@ type Props = {
   code: string;
   /** 1-based line numbers */
   activeLines?: number[];
+  /** Stretch to fill parent height (code rail) */
+  fill?: boolean;
 };
 
-export function MonacoCodePanel({ code, activeLines = [] }: Props) {
+export function MonacoCodePanel({
+  code,
+  activeLines = [],
+  fill = false,
+}: Props) {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const decoRef = useRef<string[]>([]);
 
@@ -38,6 +44,7 @@ export function MonacoCodePanel({ code, activeLines = [] }: Props) {
       acceptSuggestionOnEnter: "off",
       tabCompletion: "off",
       wordBasedSuggestions: "off",
+      automaticLayout: true,
     });
   };
 
@@ -71,8 +78,12 @@ export function MonacoCodePanel({ code, activeLines = [] }: Props) {
   }, [activeLines, code]);
 
   return (
-    <div className="flex h-full min-h-[220px] flex-col overflow-hidden rounded-xl border border-border bg-[#1e1e1e] shadow-sm">
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
+    <div
+      className={`flex flex-col overflow-hidden rounded-xl border border-border bg-[#1e1e1e] shadow-sm ${
+        fill ? "h-full min-h-0" : "h-full min-h-[220px]"
+      }`}
+    >
+      <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-3 py-2">
         <span className="font-mono text-xs tracking-wide text-white/70">
           algorithm.py
         </span>
@@ -91,6 +102,7 @@ export function MonacoCodePanel({ code, activeLines = [] }: Props) {
             readOnly: true,
             domReadOnly: true,
             contextmenu: false,
+            automaticLayout: true,
           }}
         />
       </div>

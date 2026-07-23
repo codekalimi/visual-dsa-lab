@@ -57,7 +57,7 @@ function Collapsible({
 export function KadaneTeachPanel() {
   return (
     <TeachRail subtitle="Kadane — durable understanding">
-      <p className="px-1 pb-1 text-[12px] leading-relaxed text-muted">
+      <p className="px-1 pb-1 text-[12px] leading-relaxed text-muted md:max-w-3xl">
         Play the lab first. Then walk this path once. Goal: recognize
         max-subarray problems and solve them without memorizing a finished
         solution.
@@ -345,21 +345,23 @@ export function KadaneTeachPanel() {
         </ol>
       </TeachCard>
 
-      <Collapsible title="Interview drill" defaultOpen={false}>
-        <ol className="list-decimal space-y-1.5 pl-4">
-          <li>Restate input, output, constraints.</li>
-          <li>Run a tiny example (include all-negative).</li>
-          <li>Name brute force and its bottleneck.</li>
-          <li>Extract triggers → Kadane.</li>
-          <li>
-            Name the invariant (<span className="font-mono">curSum</span> is
-            the sum of <span className="font-mono">[L…R]</span>).
-          </li>
-          <li>Write pseudocode before syntax.</li>
-          <li>Test normal, boundary, adversarial cases.</li>
-          <li>State O(n) / O(1) with reason.</li>
-        </ol>
-      </Collapsible>
+      <div>
+        <Collapsible title="Interview drill" defaultOpen={false}>
+          <ol className="list-decimal space-y-1.5 pl-4">
+            <li>Restate input, output, constraints.</li>
+            <li>Run a tiny example (include all-negative).</li>
+            <li>Name brute force and its bottleneck.</li>
+            <li>Extract triggers → Kadane.</li>
+            <li>
+              Name the invariant (<span className="font-mono">curSum</span> is
+              the sum of <span className="font-mono">[L…R]</span>).
+            </li>
+            <li>Write pseudocode before syntax.</li>
+            <li>Test normal, boundary, adversarial cases.</li>
+            <li>State O(n) / O(1) with reason.</li>
+          </ol>
+        </Collapsible>
+      </div>
     </TeachRail>
   );
 }

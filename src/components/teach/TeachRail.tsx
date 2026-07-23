@@ -14,22 +14,22 @@ export function TeachRail({
   children,
 }: Props) {
   return (
-    <aside
-      className="flex w-full shrink-0 flex-col border-t border-border bg-panel xl:sticky xl:top-0 xl:h-[calc(100dvh-2.75rem)] xl:w-[340px] xl:border-t-0 xl:border-l xl:self-start"
+    <section
+      className="w-full border-t border-border bg-panel"
       aria-label="Teaching guide"
     >
-      <div className="border-b border-border px-4 py-4">
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-emerald">
-          {title}
-        </p>
-        {subtitle && (
-          <p className="mt-1 text-sm font-medium text-ink">{subtitle}</p>
-        )}
+      <div className="w-full px-4 py-6 md:px-6">
+        <div className="mb-5">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-emerald">
+            {title}
+          </p>
+          {subtitle && (
+            <p className="mt-1 text-lg font-semibold text-ink">{subtitle}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-4">{children}</div>
       </div>
-      <div className="sidebar-scroll flex-1 space-y-3 overflow-y-auto px-3 py-4">
-        {children}
-      </div>
-    </aside>
+    </section>
   );
 }
 
@@ -106,7 +106,7 @@ export function TeachCard({
 }) {
   const tone = ACCENT[accent];
   return (
-    <article className="rounded-lg border border-border bg-panel-2/60 px-3 py-3">
+    <article className="rounded-lg border border-border bg-panel-2/60 px-4 py-4">
       <header className="mb-2 flex items-start gap-2.5">
         <span
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border ${tone.box}`}
@@ -114,11 +114,11 @@ export function TeachCard({
         >
           <Icon className={`h-3.5 w-3.5 ${tone.icon}`} strokeWidth={2} />
         </span>
-        <h3 className="pt-1 text-[13px] font-semibold leading-snug text-ink">
+        <h3 className="pt-1 text-sm font-semibold leading-snug text-ink">
           {title}
         </h3>
       </header>
-      <div className="space-y-2.5 pl-[2.375rem] text-[13px] leading-relaxed text-muted">
+      <div className="max-w-3xl space-y-2.5 pl-[2.375rem] text-[13px] leading-relaxed text-muted">
         {children}
       </div>
     </article>
